@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация - Geometry Dash</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, 0%, 0%); margin: 0;
+    color: white;
+    text-align: center;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.success {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.user-info {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px;
+}
+
+button {
+    background:  #FF6B6B;
+    color:  white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+</style>
+
+</head>
+
+<body>
+    <div class="container">
+    <div class="success"> ✔️ успешная авторизация!</div>
+    <div id="userInfo" class="user-info">
+    </div>
+    <p>Теперь ты можешь вернуться в игру</p>
+    <button onclick="closeAuth()">Вернуться в игру</button>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userData = {
+    id: urlParams.get('id'),
+    first_name: urlParams.get('first_name'),
+    last_name: urlParams.get('last_name'),
+    username: urlParams.get('username'),
+    photo_url: urlParams.get('photo_url'),
+    auth_date: urlParams.get('auth_date'),
+    hash: urlParams.get('hash')
+    };
+    document.getElementById('userInfo').innerHTML =
+  `<strong>Добро пожаловать, ${userData.first_name || 'Гость'}</strong><br>
+  ${userData.username ? '@' + userData.username : ''}<br>
+  <small>ID: ${userData.id}</small>`;
+localStorage.setItem('tg_user', JSON.stringify(userData));
+    function closeAuth() {
+    try {
+    if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.sendData(JSON.stringify({
+    action: 'telegram_login',
+    user: userData
+    }));
+    }
+    if (window.opener) {
+    window.close();
+    } else {
+    window.history.back();
+    }
+    } catch (e) {
+    console.log('Error:', e);
+    window.history.back();
+    }
+}
+
+setTimeout(closeAuth, 3000);
+
+</script>
+
+</body>
+</html>
+```
