@@ -216,3 +216,17 @@ button:active {
     opacity: 0;
     }
 }
+@keyframes mouthAnimation {
+    0% { transform: scaleY(1); }
+    50% { transform: scaleY(1.5); }
+    100% { transform: scaleY(1); }
+}
+
+.tapEffect {
+    animation: tapEffect 0.5s forwards;
+}
+
+@keyframes tapEffect {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
